@@ -1,10 +1,35 @@
 import { Box, Button, HStack, Image, Stack, Text, useColorMode } from "@chakra-ui/react";
-import { BsFillSunFill } from "react-icons/bs"
+import { useEffect, useState } from "react";
+import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs"
+import { Link } from "react-router-dom";
 
 
 export default function Header(){
+    const [scroll, setScroll ] = useState(true)
+    useEffect(() => {
+        document.addEventListener("wheel", (event) => {
+            if(event.deltaY < 0){
+                // 휠 스크롤 올림 
+                setScroll(true);
+            }else if (event.deltaY > 0){
+                // 휠 스크롤 내림
+                setScroll(false)
+            }
+        }
+            
+        )
+    })
+
+    const GNB = [
+        {title: "home", href : "/"},
+        {title: "characters", href: "/characters"},
+        {title: "comics", href: "/comics"}, 
+        {title: "events", href: "/events"}
+    ]
     const { colorMode, toggleColorMode } = useColorMode();
     return <Stack 
+    transform={scroll ? "translateY(0px)" : "translateY(-60px)"}
+    transition="0.4s"
     bg="gray.800"
     w="full" 
     h="60px" 
@@ -22,15 +47,24 @@ export default function Header(){
                     <Image src="https://seeklogo.com/images/M/Marvel_Comics-logo-D489AEB9C1-seeklogo.com.png" alt="Main logo" />
                 </Box>
                 <HStack spacing="4" textTransform="uppercase">
-                    <Text>Character</Text>
-                    <Text>comics</Text>
-                    <Text>events</Text>
+                    {
+                        GNB.map((item)=>(
+                            <Link to={item.href} key={item.title} aria-label={item.title}>
+                                <Text>{item.title}</Text>
+                            </Link>      
+                        ))
+                    }
+                    
+                   
                 </HStack>
             </HStack>
             <Button
                 onClick={toggleColorMode}
             >
-                <BsFillSunFill />
+                {
+                    colorMode === "light" ? <BsFillSunFill /> : <BsFillMoonFill />
+                }
+                
             </Button>
         </HStack>
     </Stack>
