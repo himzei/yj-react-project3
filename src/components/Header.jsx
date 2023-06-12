@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 export default function Header(){
     const [scroll, setScroll ] = useState(true)
+    const [winScroll, setWinScroll] = useState(true)
+
     useEffect(() => {
         document.addEventListener("wheel", (event) => {
             if(event.deltaY < 0){
@@ -14,6 +16,12 @@ export default function Header(){
             }else if (event.deltaY > 0){
                 // 휠 스크롤 내림
                 setScroll(false)
+            }
+
+            if(window.scrollY < 80){
+                setWinScroll(true)
+            }else if(window.scrollY > 80){
+                setWinScroll(false)
             }
         }
             
@@ -28,9 +36,10 @@ export default function Header(){
     ]
     const { colorMode, toggleColorMode } = useColorMode();
     return <Stack 
+    bg={winScroll ? "transparent" : "gray.800"}
+    zIndex={99}
     transform={scroll ? "translateY(0px)" : "translateY(-60px)"}
     transition="0.4s"
-    bg="gray.800"
     w="full" 
     h="60px" 
     color="white" 
