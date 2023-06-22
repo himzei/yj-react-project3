@@ -3,6 +3,7 @@ import CarouselSlick from "../components/CarouselSlick";
 import CardItems from "../components/CardItems";
 import { RxEnter } from "react-icons/rx"
 import TitleImageSkew from "../components/TitleImageSkew";
+import { useQuery } from "react-query";
 
 const featuresLists = [
     {
@@ -24,6 +25,14 @@ const featuresLists = [
 ]
 
 export default function Home(){
+    const { isLoading, error, data } = useQuery('repoData', () =>
+    fetch('https://api.github.com/repos/tannerlinsley/react-query').then(res =>
+      res.json()
+    )
+    )
+
+    console.log(isLoading, error, data); 
+
     return <>
         {/* 캐러셀 */}
         <Box>
@@ -51,12 +60,23 @@ export default function Home(){
             imgUrl="https://assets.vogue.in/photos/5ce412599cc0c0b8f5f9b4bf/4:3/w_1440,h_1080,c_limit/Everything-you-need-to-know-before-watching-Marvel-movies-this-year.jpg"
         />
 
-        {/* 기울어진 이미지 타이틀 */}
-        <TitleImageSkew 
-            title="Events"
-            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt est quos in cum delectus numquam corrupti eligendi unde itaque, natus voluptatem, esse corporis voluptate perferendis adipisci molestiae. Ipsa, non ducimus?"
-            imgUrl="https://images.unsplash.com/photo-1674574124649-778f9afc0e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-        />
+        {/* Comics 컨텐츠 리스트 */}
+        <VStack w="full" position="relative" h="400px">
+            {/* 힌박스 위로 올라오게 하는 범위지정 */}
+            <Box 
+                position="absolute"
+                w="7xl"
+                h="400px"
+                top={-16}
+                bg="white"
+            >
+
+                
+
+            </Box>
+        </VStack>
+
+       
 
     </>
     
