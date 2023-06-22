@@ -4,9 +4,11 @@ import CardItems from "../components/CardItems";
 import TitleImageSkew from "../components/TitleImageSkew";
 import { useQuery } from "react-query";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 const settings = {
     dots: false,
+    autoplay: true,
     infinite: true,
     speed: 500,
     slidesToShow: 7,
@@ -73,21 +75,25 @@ export default function Home(){
             <Box 
                 position="absolute"
                 w="7xl"
-                h="400px"
+                py="8"
+                px="2"
                 top={-16}
                 bg="white"
             >
                  <Slider {...settings}>
                 {data?.data?.results?.map((item, i) => (
-                    <div key={i}>
-                        <Box w="180px" h="240px">
-                            <Image  src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={`Comics ${i}`}
-                                w="full" h="full"
-                                objectFit="cover"
-                            />
-                        </Box>
-                        <Text>{item.title}</Text>
-                    </div>
+                    <Link to={`/comics/${item.id}`}>
+                        <VStack key={i} w="full"  h="full" role="group" cursor="pointer" 
+                        >
+                            <Box overflow="hidden" w="170px" h="240px" _groupHover={{ transform: "scale(1.1)"}} transition={"0.4s"}>
+                                <Image  src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={`Comics ${i}`}
+                                    w="full" h="full"
+                                    objectFit="cover"
+                                />
+                            </Box>
+                            <Text transition={"0.4s"} _groupHover={{ color: "red.500", fontWeight: "600"}} mt="2" px="2">{item.title.substr(0, 36)}</Text>
+                        </VStack>
+                    </Link>
                 ))}
                 </Slider>
                 
