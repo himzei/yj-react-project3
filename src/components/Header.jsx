@@ -1,7 +1,7 @@
 import { Box, Button, HStack, Image, Stack, Text, useColorMode } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs"
-import { Link } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 
 
 export default function Header(){
@@ -34,6 +34,10 @@ export default function Header(){
         {title: "comics", href: "/comics"}, 
         {title: "events", href: "/events"}
     ]
+    
+    const apple = useLocation()
+    console.log(apple.pathname)
+
     const { colorMode, toggleColorMode } = useColorMode();
     return <Stack 
     bg={winScroll ? "transparent" : "gray.800"}
@@ -59,7 +63,7 @@ export default function Header(){
                     {
                         GNB.map((item)=>(
                             <Link to={item.href} key={item.title} aria-label={item.title}>
-                                <Text>{item.title}</Text>
+                                <Text color={item.href === apple.pathname && "blue.500" } >{item.title}</Text>
                             </Link>      
                         ))
                     }
