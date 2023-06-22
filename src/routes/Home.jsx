@@ -1,9 +1,17 @@
 import { Box, Button, Grid,  HStack, Image, Text, VStack } from "@chakra-ui/react";
 import CarouselSlick from "../components/CarouselSlick";
 import CardItems from "../components/CardItems";
-import { RxEnter } from "react-icons/rx"
 import TitleImageSkew from "../components/TitleImageSkew";
 import { useQuery } from "react-query";
+import Slider from "react-slick";
+
+const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 7,
+    slidesToScroll: 1
+  };
 
 const featuresLists = [
     {
@@ -25,12 +33,11 @@ const featuresLists = [
 ]
 
 export default function Home(){
-    const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch('https://api.github.com/repos/tannerlinsley/react-query').then(res =>
+    const { data, isLoading, error} = useQuery('repoData', () =>
+    fetch('https://gateway.marvel.com:443/v1/public/comics?format=comic&apikey=1f2be9e5633db8ee3608691d7e342629').then(res =>
       res.json()
     )
-    )
-
+  )
     console.log(isLoading, error, data); 
 
     return <>
@@ -70,7 +77,19 @@ export default function Home(){
                 top={-16}
                 bg="white"
             >
-
+                 <Slider {...settings}>
+                {data?.data?.results?.map((item, i) => (
+                    <div key={i}>
+                        <Box w="180px" h="240px">
+                            <Image  src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={`Comics ${i}`}
+                                w="full" h="full"
+                                objectFit="cover"
+                            />
+                        </Box>
+                        <Text>{item.title}</Text>
+                    </div>
+                ))}
+                </Slider>
                 
 
             </Box>
