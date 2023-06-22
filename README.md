@@ -29,3 +29,20 @@
 ## react-query
 * https://tanstack.com/query/v3/docs/react/overview
 * npm i react-query
+
+## react-native snippet
+https://always-develop.tistory.com/78 
+{ 
+    "reactfunctionalComponent": { 
+        "prefix": "rfc", 
+        "body": [ 
+            "", 
+            "export default function ${TM_FILENAME_BASE}() {", 
+            " return (", 
+            " <div></div>", 
+            " )", 
+            "}" 
+            ], 
+            "description": "reactfunctionalComponent" 
+            } 
+            }
