@@ -1,13 +1,16 @@
 import { Avatar, Box, Grid, GridItem, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import {  useParams } from "react-router-dom";
+import {  useLocation, useParams } from "react-router-dom";
 
 export default function Detail() {
     const {id} = useParams()
+    const {search} = useLocation()
+    const paramData = search.split("=")
+    console.log(paramData[1])
 
     
-    const { data, isLoading, error} = useQuery('comicsDetail', () =>
-    fetch(`https://gateway.marvel.com:443/v1/public/comics/${id}?apikey=1f2be9e5633db8ee3608691d7e342629`).then(res =>
+    const { data, isLoading, error} = useQuery(paramData[1], () =>
+    fetch(`https://gateway.marvel.com:443/v1/public/${paramData[1]}/${id}?apikey=1f2be9e5633db8ee3608691d7e342629`).then(res =>
       res.json()
         )
     )

@@ -35,13 +35,20 @@ const featuresLists = [
 ]
 
 export default function Home(){
-    const { data, isLoading, error} = useQuery('repoData', () =>
-    fetch('https://gateway.marvel.com:443/v1/public/comics?format=comic&apikey=1f2be9e5633db8ee3608691d7e342629').then(res =>
+    
+    const { data, isLoading} = useQuery('repoData', async () =>
+    await fetch(`https://gateway.marvel.com:443/v1/public/comics?format=comic&apikey=${process.env.REACT_APP_PUBLIC_KEY}`).then(res =>
       res.json()
+     )
     )
-  )
-    console.log(isLoading, error, data); 
 
+    const { data: eventsData, isLoading: eventsIsLoading} = useQuery('eventsData', async () =>
+    await fetch(`https://gateway.marvel.com:443/v1/public/events?orderBy=name&apikey=${process.env.REACT_APP_PUBLIC_KEY}`).then(res =>
+      res.json()
+        ) 
+    )
+    
+    
     return <>
         {/* 캐러셀 */}
         <Box>
@@ -82,7 +89,7 @@ export default function Home(){
             >
                  <Slider {...settings}>
                 {data?.data?.results?.map((item, i) => (
-                    <Link to={`/comics/${item.id}`}>
+                    <Link to={`/comics/${item.id}?type=comics`}>
                         <VStack key={i} w="full"  h="full" role="group" cursor="pointer" 
                         >
                             <Box overflow="hidden" w="170px" h="240px" _groupHover={{ transform: "scale(1.1)"}} transition={"0.4s"}>
@@ -101,7 +108,45 @@ export default function Home(){
             </Box>
         </VStack>
 
-       
+        {/* 이벤트 타이틀 */}
+        {/* 기울어진 이미지 타이틀 */}
+        <TitleImageSkew 
+            title="Events"
+            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt est quos in cum delectus numquam corrupti eligendi unde itaque, natus voluptatem, esse corporis voluptate perferendis adipisci molestiae. Ipsa, non ducimus?"
+            imgUrl="https://terrigen-cdn-dev.marvel.com/content/prod/1x/sre7000_trl_comp_wta_v0265.1061_r_0.jpg"
+        />
+
+        {/* Events 컨텐츠 리스트 */}
+        <VStack w="full" position="relative" h="400px">
+            {/* 힌박스 위로 올라오게 하는 범위지정 */}
+            <Box 
+                position="absolute"
+                w="7xl"
+                py="8"
+                px="2"
+                top={-16}
+                bg="white"
+            >
+                 <Slider {...settings}>
+                {eventsData?.data?.results?.map((item, i) => (
+                    <Link to={`/events/${item.id}?type=events`}>
+                        <VStack key={i} w="full"  h="full" role="group" cursor="pointer" 
+                        >
+                            <Box overflow="hidden" w="170px" h="240px" _groupHover={{ transform: "scale(1.1)"}} transition={"0.4s"}>
+                                <Image  src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={`Comics ${i}`}
+                                    w="full" h="full"
+                                    objectFit="cover"
+                                />
+                            </Box>
+                            <Text transition={"0.4s"} _groupHover={{ color: "red.500", fontWeight: "600"}} mt="2" px="2">{item.title.substr(0, 36)}</Text>
+                        </VStack>
+                    </Link>
+                ))}
+                </Slider>
+                
+
+            </Box>
+        </VStack>
 
     </>
     
