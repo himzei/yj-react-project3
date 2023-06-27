@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  HStack,
-  Image,
-  Skeleton,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Grid, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import CarouselSlick from "../components/CarouselSlick";
 import CardItems from "../components/CardItems";
 import TitleImageSkew from "../components/TitleImageSkew";
@@ -55,10 +46,7 @@ export default function Home() {
   }, []);
   const { data, isLoading } = useQuery("repoData", comicsList);
   console.log("로딩 : ", isLoading, "코믹데이터 : ", data);
-  const { data: eventsData, isLoading: eventsIsLoading } = useQuery(
-    "eventsData",
-    eventsList
-  );
+  const { data: eventsData } = useQuery("eventsData", eventsList);
 
   return (
     <>
